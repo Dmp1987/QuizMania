@@ -26,7 +26,6 @@ public class QuizMaster : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -41,6 +40,11 @@ public class QuizMaster : MonoBehaviour
                 }
 
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            getNextQuestion();
         }
     }
 
@@ -72,35 +76,70 @@ public class QuizMaster : MonoBehaviour
 
     private void refreshGamepanel(triviaQuestion question)
     {
-        //fix mulighed for ekstra visning af samme forkerte svar.. pick, delete, forfra??
-
         objGamePanel.GetComponent<TextMeshPro>().text = question.question;
+        GameObject[] answerButtonsText = { objSvar1, objSvar2, objSvar3, objSvar4 };        
 
         switch (UnityEngine.Random.Range(0, 4))
         {
-            case 0:
+            case 0:                
                 objSvar1.GetComponent<TextMeshPro>().text = question.correctAnswer;
-                objSvar2.GetComponent<TextMeshPro>().text = question.incorrectAnswers[UnityEngine.Random.Range(0, question.incorrectAnswers.Count)];
-                objSvar3.GetComponent<TextMeshPro>().text = question.incorrectAnswers[UnityEngine.Random.Range(0, question.incorrectAnswers.Count)];
-                objSvar4.GetComponent<TextMeshPro>().text = question.incorrectAnswers[UnityEngine.Random.Range(0, question.incorrectAnswers.Count)];
+
+                int answerPick = UnityEngine.Random.Range(1, question.incorrectAnswers.Count - 1);                                
+                answerPick--;                
+
+                foreach (GameObject objSvar in answerButtonsText)
+                {
+                    if (objSvar!=objSvar1)
+                    {
+                        objSvar.GetComponent<TextMeshPro>().text = question.incorrectAnswers[answerPick];                        
+                        answerPick++;
+                    }                    
+                }
                 break;
             case 1:
-                objSvar3.GetComponent<TextMeshPro>().text = question.correctAnswer;
-                objSvar2.GetComponent<TextMeshPro>().text = question.incorrectAnswers[UnityEngine.Random.Range(0, question.incorrectAnswers.Count)];
-                objSvar1.GetComponent<TextMeshPro>().text = question.incorrectAnswers[UnityEngine.Random.Range(0, question.incorrectAnswers.Count)];
-                objSvar4.GetComponent<TextMeshPro>().text = question.incorrectAnswers[UnityEngine.Random.Range(0, question.incorrectAnswers.Count)];
+                objSvar2.GetComponent<TextMeshPro>().text = question.correctAnswer;
+
+                answerPick = UnityEngine.Random.Range(1, question.incorrectAnswers.Count - 1);
+                answerPick--;
+
+                foreach (GameObject objSvar in answerButtonsText)
+                {
+                    if (objSvar != objSvar2)
+                    {
+                        objSvar.GetComponent<TextMeshPro>().text = question.incorrectAnswers[answerPick];
+                        answerPick++;
+                    }
+                }
                 break;
             case 2:
-                objSvar2.GetComponent<TextMeshPro>().text = question.correctAnswer;
-                objSvar1.GetComponent<TextMeshPro>().text = question.incorrectAnswers[UnityEngine.Random.Range(0, question.incorrectAnswers.Count)];
-                objSvar3.GetComponent<TextMeshPro>().text = question.incorrectAnswers[UnityEngine.Random.Range(0, question.incorrectAnswers.Count)];
-                objSvar4.GetComponent<TextMeshPro>().text = question.incorrectAnswers[UnityEngine.Random.Range(0, question.incorrectAnswers.Count)];
+                objSvar3.GetComponent<TextMeshPro>().text = question.correctAnswer;
+
+                answerPick = UnityEngine.Random.Range(1, question.incorrectAnswers.Count - 1);
+                answerPick--;
+
+                foreach (GameObject objSvar in answerButtonsText)
+                {
+                    if (objSvar != objSvar3)
+                    {
+                        objSvar.GetComponent<TextMeshPro>().text = question.incorrectAnswers[answerPick];
+                        answerPick++;
+                    }
+                }
                 break;
             case 3:
                 objSvar4.GetComponent<TextMeshPro>().text = question.correctAnswer;
-                objSvar2.GetComponent<TextMeshPro>().text = question.incorrectAnswers[UnityEngine.Random.Range(0, question.incorrectAnswers.Count)];
-                objSvar3.GetComponent<TextMeshPro>().text = question.incorrectAnswers[UnityEngine.Random.Range(0, question.incorrectAnswers.Count)];
-                objSvar1.GetComponent<TextMeshPro>().text = question.incorrectAnswers[UnityEngine.Random.Range(0, question.incorrectAnswers.Count)];
+
+                answerPick = UnityEngine.Random.Range(1, question.incorrectAnswers.Count - 1);
+                answerPick--;
+
+                foreach (GameObject objSvar in answerButtonsText)
+                {
+                    if (objSvar != objSvar4)
+                    {
+                        objSvar.GetComponent<TextMeshPro>().text = question.incorrectAnswers[answerPick];
+                        answerPick++;
+                    }
+                }
                 break;
             default:
                 break;
