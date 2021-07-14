@@ -15,17 +15,24 @@ public class triviaFetcher : MonoBehaviour
 
     private void Start()
     {
-        generateQuestionList();
+        generateQuestionList();        
     }
     
     public triviaQuestion getSpecificQuestion(int round) 
     {
         return questionList[round];
-        //return new triviaQuestion();
     }
 
     public triviaQuestion getNextQuestion() 
     {
+        //Puhhaaa grimgrim, lav noget ordentligt game logik 
+        if (round>=questionList.Count-2)
+        {
+            Debug.LogWarning("Generating new questions!");
+            generateQuestionList();
+            round = 0;
+        }
+
         round++;
         return questionList[round];        
     }

@@ -6,24 +6,38 @@ using UnityEngine;
 
 public class QuizMaster : MonoBehaviour
 {
+    //Classes n Structs
     private triviaFetcher tFetch;
     private triviaQuestion currentQuestion;
+
+    //GameObjects
+    private GameObject txtHigh;
+    private GameObject txtHealth;
     private GameObject objGamePanel;
     private GameObject objSvar1;
     private GameObject objSvar2;
     private GameObject objSvar3;    
-    private GameObject objSvar4;    
+    private GameObject objSvar4;
 
-    // Start is called before the first frame update
+    //GameStats
+    int hp;
+    int HighScore;
+    int currentCombo;
+
     void Start()
     {
         tFetch = this.gameObject.GetComponent<triviaFetcher>();       
-        objGamePanel = GameObject.Find("Text (TMP)");        
+        objGamePanel = GameObject.Find("txtQuestionBoard");        
         objSvar1 = GameObject.Find("txtSvar1");
         objSvar2 = GameObject.Find("txtSvar2");
         objSvar3 = GameObject.Find("txtSvar3");
         objSvar4 = GameObject.Find("txtSvar4");
+        txtHigh = GameObject.Find("txtHighscore");
+        txtHealth = GameObject.Find("txtHP");
 
+        hp = 3;
+        HighScore = 0;
+        currentCombo = 0;
     }
 
     void Update()
@@ -53,11 +67,28 @@ public class QuizMaster : MonoBehaviour
         if (v==currentQuestion.correctAnswer)
         {
             Debug.Log("DING!");
+            currentCombo++;
+            if (currentCombo>HighScore)
+            {
+                HighScore++;
+            }
+            refreshStats();
             getNextQuestion();
         }
         else
         {
             Debug.Log("NEEEEEEEJ!!!");
+            currentCombo = 0;
+            hp--;            
+            if (hp==0)
+            {
+                Debug.Log("dead");
+                HighScore = 0;
+                currentCombo = 0;
+                hp = 3;
+                getNextQuestion();
+            }
+            refreshStats();            
         }
     }
 
@@ -76,6 +107,8 @@ public class QuizMaster : MonoBehaviour
 
     private void refreshGamepanel(triviaQuestion question)
     {
+        refreshStats();        
+
         objGamePanel.GetComponent<TextMeshPro>().text = question.question;
         GameObject[] answerButtonsText = { objSvar1, objSvar2, objSvar3, objSvar4 };        
 
@@ -146,5 +179,9 @@ public class QuizMaster : MonoBehaviour
         }
     }
 
-
+    private void refreshStats()
+    {
+        txtHigh.GetComponent<TextMeshPro>().text = "Current: " + currentCombo + " Highscore: " + HighScore;
+        txtHealth.GetComponent<TextMeshPro>().text = "HP: " + hp;
+    }
 }
