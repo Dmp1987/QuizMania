@@ -65,8 +65,7 @@ public class QuizMaster : MonoBehaviour
     private void submitAnswer(string v)
     {
         if (v==currentQuestion.correctAnswer)
-        {
-            Debug.Log("DING!");
+        {         
             currentCombo++;
             if (currentCombo>HighScore)
             {
@@ -76,13 +75,11 @@ public class QuizMaster : MonoBehaviour
             getNextQuestion();
         }
         else
-        {
-            Debug.Log("NEEEEEEEJ!!!");
+        {            
             currentCombo = 0;
             hp--;            
             if (hp==0)
-            {
-                Debug.Log("dead");
+            {                
                 HighScore = 0;
                 currentCombo = 0;
                 hp = 3;

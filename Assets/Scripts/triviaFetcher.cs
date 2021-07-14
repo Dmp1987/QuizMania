@@ -26,11 +26,11 @@ public class triviaFetcher : MonoBehaviour
     public triviaQuestion getNextQuestion() 
     {
         //Puhhaaa grimgrim, lav noget ordentligt game logik 
-        if (round>=questionList.Count-2)
+        if (round==questionList.Count-1)
         {
             Debug.LogWarning("Generating new questions!");
             generateQuestionList();
-            round = 0;
+            round = -1;
         }
 
         round++;
