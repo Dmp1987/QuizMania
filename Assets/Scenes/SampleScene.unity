@@ -341,7 +341,7 @@ GameObject:
   - component: {fileID: 238467485}
   m_Layer: 0
   m_Name: svarKnap2
-  m_TagString: Untagged
+  m_TagString: answerButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -434,7 +434,7 @@ GameObject:
   - component: {fileID: 567613428}
   m_Layer: 0
   m_Name: svarKnap3
-  m_TagString: Untagged
+  m_TagString: answerButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -826,7 +826,7 @@ GameObject:
   - component: {fileID: 780408873}
   m_Layer: 0
   m_Name: svarKnap1
-  m_TagString: Untagged
+  m_TagString: answerButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2147,7 +2147,7 @@ GameObject:
   - component: {fileID: 2046917431}
   m_Layer: 0
   m_Name: svarKnap4
-  m_TagString: Untagged
+  m_TagString: answerButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

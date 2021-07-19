@@ -50,7 +50,7 @@ public class QuizMaster : MonoBehaviour
             {                
                 if (hit.transform != null)
                 {
-                    submitAnswer(hit.transform.GetComponentInParent<TextMeshPro>().text);
+                    submitAnswer(hit.transform.GetComponentInParent<TextMeshPro>().text, hit);
                 }
 
             }
@@ -62,7 +62,7 @@ public class QuizMaster : MonoBehaviour
         }
     }
 
-    private void submitAnswer(string v)
+    private void submitAnswer(string v, RaycastHit hit)
     {
         if (v==currentQuestion.correctAnswer)
         {         
@@ -72,6 +72,7 @@ public class QuizMaster : MonoBehaviour
                 HighScore++;
             }
             refreshStats();
+            colorText(true, hit);
             getNextQuestion();
         }
         else
@@ -80,11 +81,13 @@ public class QuizMaster : MonoBehaviour
             hp--;            
             if (hp==0)
             {                
-                HighScore = 0;
-                currentCombo = 0;
+                //Do losing logic (show highscore screen?)
                 hp = 3;
+                colorText(true, hit);
                 getNextQuestion();
+                return;
             }
+            colorText(false, hit);
             refreshStats();            
         }
     }
@@ -93,6 +96,22 @@ public class QuizMaster : MonoBehaviour
     {
         currentQuestion = tFetch.getSpecificQuestion(0);
         refreshGamepanel(currentQuestion);
+    }
+
+    private void colorText(bool reset, RaycastHit target)
+    {
+        if (reset)
+        {
+            GameObject[] answerButtons = GameObject.FindGameObjectsWithTag("answerButton");
+            foreach (GameObject item in answerButtons)
+            {
+                item.GetComponentInParent<TextMeshPro>().color = Color.white;
+            }
+        }
+        else
+        {
+            target.transform.GetComponentInParent<TextMeshPro>().color = Color.red;
+        }
     }
 
     private void getNextQuestion() 
