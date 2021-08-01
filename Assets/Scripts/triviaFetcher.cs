@@ -92,7 +92,7 @@ public class triviaFetcher : MonoBehaviour
         {
             UnityWebRequest request = UnityWebRequest.Get(uri);
             request.SetRequestHeader("content-type", "application/json");
-            request.SetRequestHeader("x-rapidapi-key", "e0eb241ba1msh9eaee5094dc1639p11904cjsn3e0617f6d631");
+            request.SetRequestHeader("x-rapidapi-key", "REDACTED");
             request.SetRequestHeader("x-rapidapi-host", "deep-translate1.p.rapidapi.com");
             request.SetRequestHeader("application/json", textToTranslate); 
 
