@@ -6,9 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 0
-    path: Assets/Scenes/empty.unity
+    path: Assets/Scenes/SettingsScene.unity
     guid: 56120ea4880dd9244876436da78b1a48
+  - enabled: 1
+    path: Assets/Scenes/TriviaScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}

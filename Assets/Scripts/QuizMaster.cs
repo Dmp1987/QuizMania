@@ -9,15 +9,15 @@ public class QuizMaster : MonoBehaviour
     //Classes n Structs
     private triviaFetcher tFetch;
     private triviaQuestion currentQuestion;
+    private StageManager kategorina;
+
 
     //GameObjects
-    private GameObject txtHigh;
-    private GameObject txtHealth;
-    private GameObject objGamePanel;
-    private GameObject objSvar1;
-    private GameObject objSvar2;
-    private GameObject objSvar3;    
-    private GameObject objSvar4;
+    public AudioClip answerWrongSFX;
+    public AudioClip answerSFX;
+    public AudioClip looseSFX;
+
+    private AudioSource SFXsource;
 
     //GameStats
     int hp;
@@ -26,19 +26,32 @@ public class QuizMaster : MonoBehaviour
 
     void Start()
     {
-        tFetch = this.gameObject.GetComponent<triviaFetcher>();       
-        objGamePanel = GameObject.Find("txtQuestionBoard");        
-        objSvar1 = GameObject.Find("txtSvar1");
-        objSvar2 = GameObject.Find("txtSvar2");
-        objSvar3 = GameObject.Find("txtSvar3");
-        objSvar4 = GameObject.Find("txtSvar4");
-        txtHigh = GameObject.Find("txtHighscore");
-        txtHealth = GameObject.Find("txtHP");
+        kategorina = this.gameObject.GetComponent<StageManager>();
+        tFetch = this.gameObject.GetComponent<triviaFetcher>();
 
+        SFXsource = this.GetComponent<AudioSource>();
+               
         hp = 3;
         HighScore = 0;
         currentCombo = 0;
+
+        kategorina.refreshStats(currentCombo, HighScore, hp);
+
+        //StartCoroutine("waitForTrivia");
     }
+
+    //private void waitForTrivia()
+    //{
+    //    while (!this.tFetch.isListReady)
+    //    {
+    //        if (this.tFetch.isListReady)
+    //        {
+    //            tFetch.getNextQuestion();
+    //            break;
+    //        }
+    //    }
+    //    return;
+    //}
 
     void Update()
     {
@@ -71,133 +84,50 @@ public class QuizMaster : MonoBehaviour
             {
                 HighScore++;
             }
-            refreshStats();
-            colorText(true, hit);
+            SFXsource.PlayOneShot(answerSFX,1f);
+            kategorina.fireParticles();
+            kategorina.refreshStats(currentCombo, HighScore, hp);
+            kategorina.colorText(true, hit);
             getNextQuestion();
         }
         else
-        {            
-            currentCombo = 0;
-            hp--;            
+        {                        
+            hp--;                   
             if (hp==0)
             {                
                 //Do losing logic (show highscore screen?)
                 hp = 3;
-                colorText(true, hit);
+                currentCombo = 0;
+                SFXsource.PlayOneShot(looseSFX);
+                kategorina.colorText(true, hit);
+                kategorina.refreshStats(currentCombo, HighScore, hp);
                 getNextQuestion();
                 return;
             }
-            colorText(false, hit);
-            refreshStats();            
+            
+            SFXsource.PlayOneShot(answerWrongSFX,1f);
+            kategorina.colorText(false, hit);
+            
+            kategorina.refreshStats(currentCombo, HighScore, hp);            
         }
     }
 
     private void getFirstQuestion() 
     {
         currentQuestion = tFetch.getSpecificQuestion(0);
-        refreshGamepanel(currentQuestion);
+        kategorina.refreshGamepanel(currentQuestion);
     }
 
-    private void colorText(bool reset, RaycastHit target)
-    {
-        if (reset)
-        {
-            GameObject[] answerButtons = GameObject.FindGameObjectsWithTag("answerButton");
-            foreach (GameObject item in answerButtons)
-            {
-                item.GetComponentInParent<TextMeshPro>().color = Color.white;
-            }
-        }
-        else
-        {
-            target.transform.GetComponentInParent<TextMeshPro>().color = Color.red;
-        }
-    }
+
 
     private void getNextQuestion() 
     {
         currentQuestion = tFetch.getNextQuestion();
-        refreshGamepanel(currentQuestion);
+        kategorina.refreshGamepanel(currentQuestion);
     }
 
 
-    private void refreshGamepanel(triviaQuestion question)
-    {
-        refreshStats();        
 
-        objGamePanel.GetComponent<TextMeshPro>().text = question.question;
-        GameObject[] answerButtonsText = { objSvar1, objSvar2, objSvar3, objSvar4 };        
 
-        switch (UnityEngine.Random.Range(0, 4))
-        {
-            case 0:                
-                objSvar1.GetComponent<TextMeshPro>().text = question.correctAnswer;
 
-                int answerPick = UnityEngine.Random.Range(1, question.incorrectAnswers.Count - 1);                                
-                answerPick--;                
-
-                foreach (GameObject objSvar in answerButtonsText)
-                {
-                    if (objSvar!=objSvar1)
-                    {
-                        objSvar.GetComponent<TextMeshPro>().text = question.incorrectAnswers[answerPick];                        
-                        answerPick++;
-                    }                    
-                }
-                break;
-            case 1:
-                objSvar2.GetComponent<TextMeshPro>().text = question.correctAnswer;
-
-                answerPick = UnityEngine.Random.Range(1, question.incorrectAnswers.Count - 1);
-                answerPick--;
-
-                foreach (GameObject objSvar in answerButtonsText)
-                {
-                    if (objSvar != objSvar2)
-                    {
-                        objSvar.GetComponent<TextMeshPro>().text = question.incorrectAnswers[answerPick];
-                        answerPick++;
-                    }
-                }
-                break;
-            case 2:
-                objSvar3.GetComponent<TextMeshPro>().text = question.correctAnswer;
-
-                answerPick = UnityEngine.Random.Range(1, question.incorrectAnswers.Count - 1);
-                answerPick--;
-
-                foreach (GameObject objSvar in answerButtonsText)
-                {
-                    if (objSvar != objSvar3)
-                    {
-                        objSvar.GetComponent<TextMeshPro>().text = question.incorrectAnswers[answerPick];
-                        answerPick++;
-                    }
-                }
-                break;
-            case 3:
-                objSvar4.GetComponent<TextMeshPro>().text = question.correctAnswer;
-
-                answerPick = UnityEngine.Random.Range(1, question.incorrectAnswers.Count - 1);
-                answerPick--;
-
-                foreach (GameObject objSvar in answerButtonsText)
-                {
-                    if (objSvar != objSvar4)
-                    {
-                        objSvar.GetComponent<TextMeshPro>().text = question.incorrectAnswers[answerPick];
-                        answerPick++;
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void refreshStats()
-    {
-        txtHigh.GetComponent<TextMeshPro>().text = "Current: " + currentCombo + " Highscore: " + HighScore;
-        txtHealth.GetComponent<TextMeshPro>().text = "HP: " + hp;
-    }
 }
